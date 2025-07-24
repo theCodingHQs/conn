@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import { Loader2, User, Mail, Calendar } from 'lucide-react';
+import { Loader2, Mail, Calendar } from 'lucide-react';
+import { Card, CardContent } from '../../components/ui/card';
 
 export const Route = createFileRoute('/users/')({
   component: Users,
@@ -69,25 +70,27 @@ function Users() {
 
 function UserCard({ user }: { user: User }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-center space-x-4">
-        <img
-          src={user.avatar}
-          alt={user.name}
-          className="w-12 h-12 rounded-full object-cover"
-        />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">{user.name}</h3>
-          <div className="flex items-center text-sm text-gray-600 mt-1">
-            <Mail className="w-4 h-4 mr-1" />
-            {user.email}
-          </div>
-          <div className="flex items-center text-sm text-gray-600 mt-1">
-            <Calendar className="w-4 h-4 mr-1" />
-            Joined {new Date(user.joinDate).toLocaleDateString()}
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-center space-x-4">
+          <img
+            src={user.avatar}
+            alt={user.name}
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">{user.name}</h3>
+            <div className="flex items-center text-sm text-muted-foreground mt-1">
+              <Mail className="w-4 h-4 mr-1" />
+              {user.email}
+            </div>
+            <div className="flex items-center text-sm text-muted-foreground mt-1">
+              <Calendar className="w-4 h-4 mr-1" />
+              Joined {new Date(user.joinDate).toLocaleDateString()}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

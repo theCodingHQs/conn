@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, Calendar, User, MessageCircle } from 'lucide-react';
+import { Card, CardContent } from '../../components/ui/card';
 
 export const Route = createFileRoute('/posts/')({
   component: Posts,
@@ -128,37 +129,39 @@ function PostCard({ post }: { post: Post }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-start justify-between mb-3">
-        <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColors[post.category] || 'bg-gray-100 text-gray-800'}`}>
-          {post.category}
-        </span>
-      </div>
-      
-      <h3 className="text-xl font-semibold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer">
-        {post.title}
-      </h3>
-      
-      <p className="text-gray-600 mb-4 line-clamp-3">
-        {post.excerpt}
-      </p>
-      
-      <div className="flex items-center justify-between text-sm text-gray-500">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center">
-            <User className="w-4 h-4 mr-1" />
-            {post.author}
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <span className={`px-2 py-1 text-xs font-medium rounded-full ${categoryColors[post.category] || 'bg-gray-100 text-gray-800'}`}>
+            {post.category}
+          </span>
+        </div>
+        
+        <h3 className="text-xl font-semibold mb-3 hover:text-primary cursor-pointer">
+          {post.title}
+        </h3>
+        
+        <p className="text-muted-foreground mb-4 line-clamp-3">
+          {post.excerpt}
+        </p>
+        
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <User className="w-4 h-4 mr-1" />
+              {post.author}
+            </div>
+            <div className="flex items-center">
+              <Calendar className="w-4 h-4 mr-1" />
+              {new Date(post.publishDate).toLocaleDateString()}
+            </div>
           </div>
           <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-1" />
-            {new Date(post.publishDate).toLocaleDateString()}
+            <MessageCircle className="w-4 h-4 mr-1" />
+            {post.comments}
           </div>
         </div>
-        <div className="flex items-center">
-          <MessageCircle className="w-4 h-4 mr-1" />
-          {post.comments}
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

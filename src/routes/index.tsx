@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2, Activity, Users, FileText, Settings as SettingsIcon } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -77,35 +78,39 @@ function Index() {
       </div>
 
       {/* Features Section */}
-      <div className="bg-white rounded-lg shadow-sm p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FeatureCard
-            title="React 19.1.0"
-            description="Latest version of React with improved performance and new features"
-          />
-          <FeatureCard
-            title="TanStack Router"
-            description="Type-safe routing with powerful navigation and data loading capabilities"
-          />
-          <FeatureCard
-            title="TanStack Query"
-            description="Powerful data synchronization for React with caching and background updates"
-          />
-          <FeatureCard
-            title="Tailwind CSS"
-            description="Utility-first CSS framework for rapid UI development"
-          />
-          <FeatureCard
-            title="TypeScript"
-            description="Full type safety throughout the application"
-          />
-          <FeatureCard
-            title="Vite"
-            description="Lightning fast build tool with hot module replacement"
-          />
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Features</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeatureCard
+              title="React 19.1.0"
+              description="Latest version of React with improved performance and new features"
+            />
+            <FeatureCard
+              title="TanStack Router"
+              description="Type-safe routing with powerful navigation and data loading capabilities"
+            />
+            <FeatureCard
+              title="TanStack Query"
+              description="Powerful data synchronization for React with caching and background updates"
+            />
+            <FeatureCard
+              title="Tailwind CSS"
+              description="Utility-first CSS framework for rapid UI development"
+            />
+            <FeatureCard
+              title="TypeScript"
+              description="Full type safety throughout the application"
+            />
+            <FeatureCard
+              title="Vite"
+              description="Lightning fast build tool with hot module replacement"
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -117,23 +122,25 @@ function StatCard({ title, value, icon, isLoading }: {
   isLoading: boolean;
 }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <div className="flex items-center mt-2">
-            {isLoading ? (
-              <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
-            ) : (
-              <p className="text-3xl font-bold text-gray-900">{value}</p>
-            )}
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <div className="flex items-center mt-2">
+              {isLoading ? (
+                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+              ) : (
+                <p className="text-3xl font-bold">{value}</p>
+              )}
+            </div>
+          </div>
+          <div className="flex-shrink-0">
+            {icon}
           </div>
         </div>
-        <div className="flex-shrink-0">
-          {icon}
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -142,9 +149,9 @@ function FeatureCard({ title, description }: {
   description: string;
 }) {
   return (
-    <div className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-      <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
-      <p className="text-sm text-gray-600">{description}</p>
+    <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+      <h3 className="font-semibold mb-2">{title}</h3>
+      <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { Home, Users, Settings, FileText, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { ProtectedRoute } from '../components/ProtectedRoute';
+import { Button } from '../components/ui/button';
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -31,26 +32,26 @@ function RootComponent() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen">
         {/* Navigation Header */}
-        <nav className="bg-white shadow-sm border-b">
+        <nav className="border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
                 <Link to="/" className="flex-shrink-0 flex items-center">
-                  <div className="h-8 w-8 bg-blue-600 rounded-md flex items-center justify-center">
-                    <span className="text-white font-bold">R</span>
+                  <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
+                    <span className="text-primary-foreground font-bold">R</span>
                   </div>
-                  <span className="ml-2 text-xl font-semibold text-gray-900">React App</span>
+                  <span className="ml-2 text-xl font-semibold">React App</span>
                 </Link>
               </div>
               
               <div className="flex items-center space-x-8">
                 <Link
                   to="/"
-                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                   activeProps={{
-                    className: "text-blue-600 bg-blue-50"
+                    className: "text-primary bg-accent"
                   }}
                 >
                   <Home className="w-4 h-4 mr-2" />
@@ -59,9 +60,9 @@ function RootComponent() {
                 
                 <Link
                   to="/users"
-                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                   activeProps={{
-                    className: "text-blue-600 bg-blue-50"
+                    className: "text-primary bg-accent"
                   }}
                 >
                   <Users className="w-4 h-4 mr-2" />
@@ -70,9 +71,9 @@ function RootComponent() {
                 
                 <Link
                   to="/posts"
-                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                   activeProps={{
-                    className: "text-blue-600 bg-blue-50"
+                    className: "text-primary bg-accent"
                   }}
                 >
                   <FileText className="w-4 h-4 mr-2" />
@@ -81,26 +82,27 @@ function RootComponent() {
                 
                 <Link
                   to="/settings"
-                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                   activeProps={{
-                    className: "text-blue-600 bg-blue-50"
+                    className: "text-primary bg-accent"
                   }}
                 >
                   <Settings className="w-4 h-4 mr-2" />
                   Settings
                 </Link>
                 
-                <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-200">
-                  <span className="text-sm text-gray-600">
+                <div className="flex items-center space-x-4 ml-4 pl-4 border-l">
+                  <span className="text-sm text-muted-foreground">
                     Welcome, {user?.name}
                   </span>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={logout}
-                    className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -1,6 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Save, User, Bell, Shield, Palette, Globe } from 'lucide-react';
+import { Save, User, Bell, Shield, Palette } from 'lucide-react';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Label } from '../../components/ui/label';
+import { Textarea } from '../../components/ui/textarea';
+import { Switch } from '../../components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 
 export const Route = createFileRoute('/settings/')({
   component: Settings,
@@ -55,70 +63,60 @@ function Settings() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <button
+        <h1 className="text-3xl font-bold">Settings</h1>
+        <Button
           onClick={handleSave}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Save className="w-4 h-4 mr-2" />
           Save Changes
-        </button>
+        </Button>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Sidebar */}
-        <div className="lg:w-64">
-          <nav className="space-y-1">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center px-3 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === tab.id
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  <Icon className="w-5 h-5 mr-3" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            {activeTab === 'profile' && (
+      <Card>
+        <CardContent className="p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <TabsTrigger key={tab.id} value={tab.id} className="flex items-center gap-2">
+                    <Icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+            
+            <TabsContent value="profile">
               <ProfileSettings 
                 settings={settings.profile}
                 updateSetting={(key, value) => updateSetting('profile', key, value)}
               />
-            )}
-            {activeTab === 'notifications' && (
+            </TabsContent>
+            
+            <TabsContent value="notifications">
               <NotificationSettings 
                 settings={settings.notifications}
                 updateSetting={(key, value) => updateSetting('notifications', key, value)}
               />
-            )}
-            {activeTab === 'appearance' && (
+            </TabsContent>
+            
+            <TabsContent value="appearance">
               <AppearanceSettings 
                 settings={settings.appearance}
                 updateSetting={(key, value) => updateSetting('appearance', key, value)}
               />
-            )}
-            {activeTab === 'privacy' && (
+            </TabsContent>
+            
+            <TabsContent value="privacy">
               <PrivacySettings 
                 settings={settings.privacy}
                 updateSetting={(key, value) => updateSetting('privacy', key, value)}
               />
-            )}
-          </div>
-        </div>
-      </div>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -126,42 +124,40 @@ function Settings() {
 function ProfileSettings({ settings, updateSetting }: any) {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-gray-900">Profile Settings</h2>
+      <div>
+        <h3 className="text-lg font-medium">Profile Settings</h3>
+        <p className="text-sm text-muted-foreground">
+          Update your personal information and profile details.
+        </p>
+      </div>
       
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Full Name
-          </label>
-          <input
-            type="text"
+          <Label htmlFor="name">Full Name</Label>
+          <Input
+            id="name"
             value={settings.name}
             onChange={(e) => updateSetting('name', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email Address
-          </label>
-          <input
+          <Label htmlFor="email">Email Address</Label>
+          <Input
+            id="email"
             type="email"
             value={settings.email}
             onChange={(e) => updateSetting('email', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Bio
-          </label>
-          <textarea
+          <Label htmlFor="bio">Bio</Label>
+          <Textarea
+            id="bio"
             value={settings.bio}
             onChange={(e) => updateSetting('bio', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
       </div>
@@ -172,55 +168,45 @@ function ProfileSettings({ settings, updateSetting }: any) {
 function NotificationSettings({ settings, updateSetting }: any) {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-gray-900">Notification Settings</h2>
+      <div>
+        <h3 className="text-lg font-medium">Notification Settings</h3>
+        <p className="text-sm text-muted-foreground">
+          Configure how you receive notifications and updates.
+        </p>
+      </div>
       
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Email Notifications</h3>
-            <p className="text-sm text-gray-600">Receive notifications via email</p>
+            <Label>Email Notifications</Label>
+            <p className="text-sm text-muted-foreground">Receive notifications via email</p>
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={settings.emailNotifications}
-              onChange={(e) => updateSetting('emailNotifications', e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-          </label>
+          <Switch
+            checked={settings.emailNotifications}
+            onCheckedChange={(checked) => updateSetting('emailNotifications', checked)}
+          />
         </div>
         
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Push Notifications</h3>
-            <p className="text-sm text-gray-600">Receive push notifications in your browser</p>
+            <Label>Push Notifications</Label>
+            <p className="text-sm text-muted-foreground">Receive push notifications in your browser</p>
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={settings.pushNotifications}
-              onChange={(e) => updateSetting('pushNotifications', e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-          </label>
+          <Switch
+            checked={settings.pushNotifications}
+            onCheckedChange={(checked) => updateSetting('pushNotifications', checked)}
+          />
         </div>
         
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Weekly Digest</h3>
-            <p className="text-sm text-gray-600">Receive a weekly summary of activity</p>
+            <Label>Weekly Digest</Label>
+            <p className="text-sm text-muted-foreground">Receive a weekly summary of activity</p>
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={settings.weeklyDigest}
-              onChange={(e) => updateSetting('weeklyDigest', e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-          </label>
+          <Switch
+            checked={settings.weeklyDigest}
+            onCheckedChange={(checked) => updateSetting('weeklyDigest', checked)}
+          />
         </div>
       </div>
     </div>
@@ -230,38 +216,47 @@ function NotificationSettings({ settings, updateSetting }: any) {
 function AppearanceSettings({ settings, updateSetting }: any) {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-gray-900">Appearance Settings</h2>
+      <div>
+        <h3 className="text-lg font-medium">Appearance Settings</h3>
+        <p className="text-sm text-muted-foreground">
+          Customize the look and feel of your application.
+        </p>
+      </div>
       
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Theme
-          </label>
-          <select
+          <Label>Theme</Label>
+          <Select
             value={settings.theme}
-            onChange={(e) => updateSetting('theme', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onValueChange={(value) => updateSetting('theme', value)}
           >
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="system">System</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="light">Light</SelectItem>
+              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="system">System</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Language
-          </label>
-          <select
+          <Label>Language</Label>
+          <Select
             value={settings.language}
-            onChange={(e) => updateSetting('language', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onValueChange={(value) => updateSetting('language', value)}
           >
-            <option value="en">English</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="de">German</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="es">Spanish</SelectItem>
+              <SelectItem value="fr">French</SelectItem>
+              <SelectItem value="de">German</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>
@@ -271,38 +266,40 @@ function AppearanceSettings({ settings, updateSetting }: any) {
 function PrivacySettings({ settings, updateSetting }: any) {
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-gray-900">Privacy Settings</h2>
+      <div>
+        <h3 className="text-lg font-medium">Privacy Settings</h3>
+        <p className="text-sm text-muted-foreground">
+          Control your privacy and data sharing preferences.
+        </p>
+      </div>
       
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Profile Visibility
-          </label>
-          <select
+          <Label>Profile Visibility</Label>
+          <Select
             value={settings.profileVisibility}
-            onChange={(e) => updateSetting('profileVisibility', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onValueChange={(value) => updateSetting('profileVisibility', value)}
           >
-            <option value="public">Public</option>
-            <option value="friends">Friends Only</option>
-            <option value="private">Private</option>
-          </select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="public">Public</SelectItem>
+              <SelectItem value="friends">Friends Only</SelectItem>
+              <SelectItem value="private">Private</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-900">Data Sharing</h3>
-            <p className="text-sm text-gray-600">Allow sharing of anonymized data for analytics</p>
+            <Label>Data Sharing</Label>
+            <p className="text-sm text-muted-foreground">Allow sharing of anonymized data for analytics</p>
           </div>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={settings.dataSharing}
-              onChange={(e) => updateSetting('dataSharing', e.target.checked)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-          </label>
+          <Switch
+            checked={settings.dataSharing}
+            onCheckedChange={(checked) => updateSetting('dataSharing', checked)}
+          />
         </div>
       </div>
     </div>
