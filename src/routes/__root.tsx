@@ -36,9 +36,9 @@ function RootComponent() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen">
-        {/* Modern Responsive Navigation */}
-        <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="min-h-screen relative">
+        {/* Full Screen Responsive Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
               {/* Logo Section */}
@@ -89,7 +89,7 @@ function RootComponent() {
                   
                   {/* User Dropdown Menu */}
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-background border rounded-lg shadow-lg py-1 z-50">
+                    <div className="absolute right-0 mt-2 w-56 bg-background border rounded-lg shadow-lg py-1 z-[60]">
                       <div className="px-4 py-3 border-b">
                         <div className="font-medium">{user?.name}</div>
                         <div className="text-sm text-muted-foreground">{user?.email}</div>
@@ -128,7 +128,7 @@ function RootComponent() {
           </div>
 
           {/* Mobile Navigation Menu */}
-          <div className={`lg:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+          <div className={`lg:hidden fixed left-0 right-0 top-16 transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
             <div className="px-4 pt-2 pb-6 space-y-1 bg-background/95 backdrop-blur border-t">
               {/* Mobile Navigation Links */}
               <MobileNavLink to="/" icon={Home} label="Home" onClick={() => setIsMobileMenuOpen(false)} />
@@ -166,7 +166,7 @@ function RootComponent() {
         </nav>
 
         {/* Main Content */}
-        <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-4rem)]">
+        <main className="pt-16 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 min-h-screen">
           <Outlet />
         </main>
 
